@@ -1,15 +1,21 @@
-const express = require('express');
-const cors = require('cors');
+const http = require('http');
 
-const app = express();
-const PORT = 3000;
+const symbols = ['🃏', '7️⃣', '🍀', '🍒'];
+const quotes = [
+    "Don't give up. Great things take time. ⏳",
+    "Failure is just another step towards success. 💪",
+    "Keep going, your luck might change next time! 🍀",
+    "Every setback is a setup for a comeback. 🔄",
+    "You miss 100% of the shots you don’t take. 🎯",
+    "Believe in yourself, and you’re halfway there. 🌟",
+    "When one door closes, another opens. 🚪✨",
+    "The best way to predict the future is to create it. 🛠️",
+    "Difficult roads often lead to beautiful destinations. 🛤️🌄",
+    "Your only limit is you. Break your boundaries. 💥"
+];
 
-app.use(cors()); // Allow requests from the frontend
-app.use(express.json()); // Parse JSON requests
-
-// Generate slot spin
+// Generate Random Grid
 function rand_spin() {
-    const symbols = ['🃏', '7️⃣', '🍀', '🍒']; 
     const matrix = Array.from({ length: 3 }, () => Array(5).fill(0));
 
     for (let j = 0; j < 5; j++) {
@@ -32,130 +38,52 @@ function rand_spin() {
 
 // Check Winning Patterns
 function check_patterns(matrix) {
-    const u1 = matrix[0][0], u2 = matrix[0][1], u3 = matrix[0][2], u4 = matrix[0][3], u5 = matrix[0][4];
-    const m1 = matrix[1][0], m2 = matrix[1][1], m3 = matrix[1][2], m4 = matrix[1][3], m5 = matrix[1][4];
-    const d1 = matrix[2][0], d2 = matrix[2][1], d3 = matrix[2][2], d4 = matrix[2][3], d5 = matrix[2][4];
+    const [u1, u2, u3, u4, u5] = matrix[0];
+    const [m1, m2, m3, m4, m5] = matrix[1];
+    const [d1, d2, d3, d4, d5] = matrix[2];
 
-    function cpy(matrix, win) {
+    function markWinningCells(matrix, win) {
         return matrix.map(row => row.map(cell => (cell === win ? '$' : cell)));
     }
 
-    // Check for a full horizontal row match
-    if (m1 === m2 && m1 === m3 && m1 === m4 && m1 === m5) {
-        return {pattern: cpy(matrix, m1), pay: 100 };
-    }
-    
-    if (u1 === u2 && u1 === u3 && u1 === u4 && u1 === u5) {
-        return { pattern: cpy(matrix, u1), pay: 50 };
-    }
-
-    if (d1 === d2 && d1 === d3 && d1 === d4 && d1 === d5) {
-        return { pattern: cpy(matrix, d1), pay: 50 };
-    }
-
-    if (m1 === m2 && m1 === d3 && m1 === m4 && m1 === m5) {            
-        return { pattern: cpy(matrix, m1), pay: 25 };
-    }
-
-    if (m1 === m2 && m1 === u3 && m1 === m4 && m1 === m5) {            
-        return { pattern: cpy(matrix, m1), pay: 25 };
-    }
-
-    if (m1 === d2 && m1 === m3 && m1 === d4 && m1 === m5) {
-        return { pattern: cpy(matrix, m1), pay: 12.5 };
-    }
-
-    if (m1 === u2 && m1 === m3 && m1 === u4 && m1 === m5) {
-        return { pattern: cpy(matrix, m1), pay: 12.5 };
-    }
-
-    // Checking "mdmum" pattern
-    if (m1 === d2 && m1 === m3 && m1 === u4 && m1 === m5){
-        return { pattern: cpy(matrix, m1), pay: 6.200 };
-    }
-
-    // "mumdm" pattern
-    if (m1 === u2 && m1 === m3 && m1 === d4 && m1 === m5) {
-        return { pattern: cpy(matrix, m1), pay: 6.200 };
-    }
-
-    // "ummmu" pattern
-    if (u1 === m2 && u1 === m3 && u1 === m4 && u1 === u5) {
-        return { pattern: cpy(matrix, u1), pay: 3.200 };
-    }
-
-    // "dmmmd" pattern
-    if (d1 === m2 && d1 === m3 && d1 === m4 && d1 === d5) {
-        return { pattern: cpy(matrix, d1), pay: 3.200 };
-    }
-
-    // "umumu" pattern
-    if (u1 === m2 && u1 === u3 && u1 === m4 && u1 === u5) {
-        return { pattern: cpy(matrix, u1), pay: 1.600 };
-    }
-
-    // "dmdmd" pattern
-    if (d1 === m2 && d1 === d3 && d1 === m4 && d1 === d5) {
-        return { pattern: cpy(matrix, d1), pay: 1.600 };
-    }
-
-    // "dmumd" pattern
-    if (d1 === m2 && m2 === u3 && u3 === m4 && m4 === d5) {
-        return { pattern: cpy(matrix, d1), pay: .800 };
-    }
-
-    // Checking "umdmu" pattern
-    if (u1 === m2 && m2 === d3 && d3 === m4 && m4 === u5) {
-        return { pattern: cpy(matrix, u1), pay: .800 };
-    }
-
-    // Checking "uumdd" pattern
-    if (u1 === u2 && u1 === m3 && u1 === d4 && u1 === d5) {
-        return { pattern: cpy(matrix, u1), pay: .400 };
-    }
-
-    // Checking "ddmuu" pattern
-    if (d1 === d2 && d1 === m3 && d1 === u4 && d1 === u5) {
-        return { pattern: cpy(matrix, d1), pay: .400 };
-    }
-
-    // Checking "ddudd" pattern
-    if (d1 === d2 && d1 === u3 && d1 === d4 && d1 === d5) {
-        return { pattern: cpy(matrix, d1), pay: .200 };
-    }
-
-    // Checking "uuduu" pattern
-    if (u1 === u2 && u1 === d3 && u1 === u4 && u1 === u5) {
-        return { pattern: cpy(matrix, u1), pay: .200 };
-    }
-
-    // Checking "duuud" pattern
-    if (d1 === u2 && d1 === u3 && d1 === u4 && d1 === d5) {
-        return { pattern: cpy(matrix, d1), pay: .100 };
-    }
-
-    // Checking "udddu" pattern
-    if (u1 === d2 && u1 === d3 && u1 === d4 && u1 === u5) {
-        return { pattern: cpy(matrix, u1), pay: .100 };
-    }
+    if (m1 === m2 && m1 === d3 && m1 === m4 && m1 === m5) return { pattern: markWinningCells(matrix, m1), pay: 25 };
+    if (m1 === m2 && m1 === u3 && m1 === m4 && m1 === m5) return { pattern: markWinningCells(matrix, m1), pay: 25 };
+    if (m1 === d2 && m1 === m3 && m1 === d4 && m1 === m5) return { pattern: markWinningCells(matrix, m1), pay: 12.5 };
+    if (m1 === u2 && m1 === m3 && m1 === u4 && m1 === m5) return { pattern: markWinningCells(matrix, m1), pay: 12.5 };
 
     return { pattern: 'LOSE', pay: 0 };
 }
 
-// API endpoint for spin
-app.post('/spin', (req, res) => {
-    const { bet } = req.body;
-    if (!bet || bet <= 0) {
-        return res.status(400).json({ error: "Invalid bet amount." });
+// Create HTTP Server
+const server = http.createServer((req, res) => {
+    if (req.method === 'POST' && req.url === '/spin') {
+        let body = '';
+
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+            const { bet } = JSON.parse(body);
+            const matrix = rand_spin();
+            const result = check_patterns(matrix);
+
+            const response = {
+                matrix,
+                status: result.pattern === 'LOSE' ? 'LOSE' : 'WIN',
+                payout: (bet * result.pay).toFixed(2),
+                quote: result.pattern === 'LOSE' ? quotes[Math.floor(Math.random() * quotes.length)] : '',
+                pattern: result.pattern
+            };
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(response));
+        });
+    } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not Found');
     }
-
-    const matrix = rand_spin();
-    const result = check_patterns(matrix);
-
-    let payout = bet * result.pay;
-    res.json({ matrix, result, payout });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+// Start Server
+server.listen(3000, () => console.log('Server running on http://localhost:3000'));
