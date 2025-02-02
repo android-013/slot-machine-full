@@ -23,7 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const quotes = [
             "Don't give up. Great things take time. ⏳",
             "Failure is just another step towards success. 💪",
-            "Keep going, your luck might change next time! 🍀"
+            "Keep going, your luck might change next time! 🍀",
+            "Every setback is a setup for a comeback. 🔄",
+            "You miss 100% of the shots you don’t take. 🎯",
+            "Believe in yourself, and you’re halfway there. 🌟",
+            "When one door closes, another opens. 🚪✨",
+            "The best way to predict the future is to create it. 🛠️",
+            "Difficult roads often lead to beautiful destinations. 🛤️🌄",
+            "Your only limit is you. Break your boundaries. 💥"
         ];
         return quotes[Math.floor(Math.random() * quotes.length)];
     }
