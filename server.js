@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = 5500;
+const PORT = 3000;
 
 app.use(cors()); // Allow requests from the frontend
 app.use(express.json()); // Parse JSON requests
