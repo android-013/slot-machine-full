@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slot Machine Game</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <script src="background.js" defer></script>
+
+</head>
+<body>
+    <canvas id="background"></canvas>
+    <div class="container">
+        <h1>🎰 Slot Machine Game 🎰</h1>
+        <div id="slot-grid" class="slot-grid">
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="status-panel">
+            <span id="status">Press Play to Start!</span>
+            <p><span id="payout">Payout: $0</span>
+            </p>
+        </div>
+        <div id="quote" class="quote"></div>
+    </div>
+
+    <div id="bet-buttons">
+        <div class="bet-row">
+            <button class="bet-btn" data-amount="1">$1</button>
+            <button class="bet-btn" data-amount="2">$2</button>
+            <button class="bet-btn" data-amount="3">$3</button>
+            <button class="bet-btn" data-amount="4">$4</button>
+            <button class="bet-btn" data-amount="5">$5</button>
+        </div>
+        <div class="bet-row">
+            <button class="bet-btn" data-amount="6">$6</button>
+            <button class="bet-btn" data-amount="7">$7</button>
+            <button class="bet-btn" data-amount="8">$8</button>
+            <button class="bet-btn" data-amount="9">$9</button>
+            <button class="bet-btn" data-amount="10">$10</button>
+        </div>
+    </div>
+    
+    <p id="selected-bet">Selected Bet: $0</p>
+
+    <button id="play-btn">PLAY</button>
+</body>
+</html>
