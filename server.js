@@ -44,9 +44,11 @@ function check_patterns(matrix) {
     if (m1 === m2 && m1 === m3 && m1 === m4 && m1 === m5) {
         return {pattern: cpy(matrix, m1), pay: 100 };
     }
+    
     if (u1 === u2 && u1 === u3 && u1 === u4 && u1 === u5) {
         return { pattern: cpy(matrix, u1), pay: 50 };
     }
+
     if (d1 === d2 && d1 === d3 && d1 === d4 && d1 === d5) {
         return { pattern: cpy(matrix, d1), pay: 50 };
     }
@@ -54,12 +56,15 @@ function check_patterns(matrix) {
     if (m1 === m2 && m1 === d3 && m1 === m4 && m1 === m5) {            
         return { pattern: cpy(matrix, m1), pay: 25 };
     }
+
     if (m1 === m2 && m1 === u3 && m1 === m4 && m1 === m5) {            
         return { pattern: cpy(matrix, m1), pay: 25 };
     }
+
     if (m1 === d2 && m1 === m3 && m1 === d4 && m1 === m5) {
         return { pattern: cpy(matrix, m1), pay: 12.5 };
     }
+
     if (m1 === u2 && m1 === m3 && m1 === u4 && m1 === m5) {
         return { pattern: cpy(matrix, m1), pay: 12.5 };
     }
