@@ -243,16 +243,16 @@ h3 {
     display: inline-block;
     font-size: 2rem;
     animation: spinEffect 0.3s ease-in-out;
-  }
-  .win-cell {
+}
+.win-cell {
     background-color: yellow;
     animation: flash 0.5s alternate infinite;
-  }
-  @keyframes spinEffect {
+}
+@keyframes spinEffect {
     0% { transform: scale(0); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
-  }
-  @keyframes flash {
+}
+@keyframes flash {
     0% { background-color: yellow; }
     100% { background-color: gold; }
-  }
+}
