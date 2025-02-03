@@ -86,4 +86,5 @@ const server = http.createServer((req, res) => {
 });
 
 // Start Server
-server.listen(3000, () => console.log('Server running on http://localhost:3000'));
+server.listen(5500, () => console.log('Server running on http://localhost:5500'));
+

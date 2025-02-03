@@ -43,7 +43,7 @@ async function playGame() {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/spin', {
+        const response = await fetch('http://localhost:5500', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ bet: selectedBet })
